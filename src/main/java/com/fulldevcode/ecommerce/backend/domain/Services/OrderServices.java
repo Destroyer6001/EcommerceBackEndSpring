@@ -357,6 +357,44 @@ public class OrderServices {
             String message = "Ha ocurrido un error " + ex.getMessage();
             return  ApiResponseDTO.error(message);
         }
+    }
 
+    public ApiResponseDTO<List<CategoriesTotalSalesDTO>> CategoriesTotalSales()
+    {
+        try
+        {
+            List<CategoriesTotalSalesDTO> categoriesTotalSales = orderProductsRespository.SearchCategoriesTotalSales(PageRequest.of(0 , 5));
+            return ApiResponseDTO.success("Lista de categorias con mas ganancias obtenidas correctamente", categoriesTotalSales);
+
+        }
+        catch (PersistenceException | IllegalArgumentException ex)
+        {
+            String message = "Ha ocurrido un error" + ex.getMessage();
+            return  ApiResponseDTO.error(message);
+        }
+        catch (Exception ex)
+        {
+            String message = "Ha ocurrido un error " + ex.getMessage();
+            return  ApiResponseDTO.error(message);
+        }
+    }
+
+    public ApiResponseDTO<List<CategoriesMaxSalesDTO>> CategoriesMaxSales()
+    {
+        try
+        {
+            List<CategoriesMaxSalesDTO> categoriesMaxSale = orderProductsRespository.SearchCategoriesMaxSales(PageRequest.of(0, 5));
+            return ApiResponseDTO.success("Lista de numero de ventas por categoria obtenido correctamente", categoriesMaxSale);
+        }
+        catch (PersistenceException | IllegalArgumentException ex)
+        {
+            String message = "Ha ocurrido un error" + ex.getMessage();
+            return  ApiResponseDTO.error(message);
+        }
+        catch (Exception ex)
+        {
+            String message = "Ha ocurrido un error " + ex.getMessage();
+            return  ApiResponseDTO.error(message);
+        }
     }
 }

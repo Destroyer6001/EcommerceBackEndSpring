@@ -4,6 +4,7 @@ import com.fulldevcode.ecommerce.backend.domain.Services.OrderServices;
 import com.fulldevcode.ecommerce.backend.infraestructure.DTO.*;
 import com.fulldevcode.ecommerce.backend.infraestructure.models.OrderEntity;
 import org.springframework.web.bind.annotation.*;
+import org.w3c.dom.ls.LSInput;
 
 import java.util.List;
 
@@ -71,5 +72,19 @@ public class OrderController {
     {
         ApiResponseDTO<List<ReportStatesProductsDTO>> ordersStates = orderServices.OrdersTotalState();
         return ordersStates;
+    }
+
+    @GetMapping("/totalSalesCategory")
+    public ApiResponseDTO<List<CategoriesTotalSalesDTO>> TotalSalesCategory()
+    {
+        ApiResponseDTO<List<CategoriesTotalSalesDTO>> totalSales = orderServices.CategoriesTotalSales();
+        return totalSales;
+    }
+
+    @GetMapping("/maxSalesProduct")
+    public ApiResponseDTO<List<CategoriesMaxSalesDTO>> MaxSalesCategory()
+    {
+        ApiResponseDTO<List<CategoriesMaxSalesDTO>> maxSales = orderServices.CategoriesMaxSales();
+        return maxSales;
     }
 }

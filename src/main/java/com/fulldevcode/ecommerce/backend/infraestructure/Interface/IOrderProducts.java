@@ -1,5 +1,7 @@
 package com.fulldevcode.ecommerce.backend.infraestructure.Interface;
 
+import com.fulldevcode.ecommerce.backend.infraestructure.DTO.CategoriesMaxSalesDTO;
+import com.fulldevcode.ecommerce.backend.infraestructure.DTO.CategoriesTotalSalesDTO;
 import com.fulldevcode.ecommerce.backend.infraestructure.DTO.ReportProductTotalSalesDTO;
 import com.fulldevcode.ecommerce.backend.infraestructure.DTO.ReportProductsMaxSalesDTO;
 import com.fulldevcode.ecommerce.backend.infraestructure.models.OrdersProductsEntity;
@@ -38,4 +40,36 @@ public interface IOrderProducts extends JpaRepository<OrdersProductsEntity, Inte
             ORDER BY SUM(orp.stock) DESC
             """)
     List<ReportProductsMaxSalesDTO> SearchMaxSalesProduct(PageRequest pageable);
+
+    @Query("""
+            SELECT new com.fulldevcode.ecommerce.backend.infraestructure.DTO.CategoriesTotalSalesDTO
+            (
+                cat.name,
+                SUM((orp.salePrice * orp.stock) - (pr.sale * orp.stock))
+            )
+            FROM OrdersProductsEntity orp
+            JOIN orp.product pr
+            JOIN orp.order ord
+            JOIN pr.category cat
+            WHERE ord.State = com.fulldevcode.ecommerce.backend.infraestructure.models.OrderState.COMPLETED
+            GROUP BY cat.id, cat.name
+            ORDER BY SUM((orp.salePrice * orp.stock) - (pr.sale * orp.stock)) DESC
+            """)
+    List<CategoriesTotalSalesDTO> SearchCategoriesTotalSales(PageRequest pageable);
+
+    @Query("""
+            SELECT new com.fulldevcode.ecommerce.backend.infraestructure.DTO.CategoriesMaxSalesDTO
+            (
+              cat.name,
+              SUM(orp.stock)
+            )
+            FROM OrdersProductsEntity orp
+            JOIN orp.product pr
+            JOIN orp.order ord
+            JOIN pr.category cat
+            WHERE ord.State = com.fulldevcode.ecommerce.backend.infraestructure.models.OrderState.COMPLETED
+            GROUP BY cat.id, cat.name
+            ORDER BY SUM(orp.stock) DESC
+            """)
+    List<CategoriesMaxSalesDTO> SearchCategoriesMaxSales(PageRequest pageable);
 }

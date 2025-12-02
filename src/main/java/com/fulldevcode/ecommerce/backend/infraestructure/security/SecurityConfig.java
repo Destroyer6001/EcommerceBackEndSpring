@@ -104,9 +104,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/products/getAll").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
                         .requestMatchers("/api/orders/orderById/*").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
                         .requestMatchers("/api/orders/changeState").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+                        .requestMatchers("/api/orders/getOrdersUser/*").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
 
                         // routes only user
-                        .requestMatchers("/api/orders/getOrdersUser/*").hasAuthority("ROLE_USER")
                         .requestMatchers("/api/orders/orderCreate").hasAuthority("ROLE_USER")
 
                         // routes only admin
@@ -118,6 +118,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/orders/totalSalesProduct").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/api/orders/maxSalesProduct").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/api/orders/ordersForState").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/api/orders/totalSalesCategory").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/api/orders/maxSalesProduct").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/api/inventoryAdjustments/**").hasAuthority("ROLE_ADMIN")
 
                         .anyRequest().authenticated()
