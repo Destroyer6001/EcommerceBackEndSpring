@@ -1,9 +1,6 @@
 package com.fulldevcode.ecommerce.backend.infraestructure.Interface;
 
-import com.fulldevcode.ecommerce.backend.infraestructure.DTO.CategoriesMaxSalesDTO;
-import com.fulldevcode.ecommerce.backend.infraestructure.DTO.CategoriesTotalSalesDTO;
-import com.fulldevcode.ecommerce.backend.infraestructure.DTO.ReportProductTotalSalesDTO;
-import com.fulldevcode.ecommerce.backend.infraestructure.DTO.ReportProductsMaxSalesDTO;
+import com.fulldevcode.ecommerce.backend.infraestructure.DTO.*;
 import com.fulldevcode.ecommerce.backend.infraestructure.models.OrdersProductsEntity;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,7 +11,7 @@ import java.util.List;
 public interface IOrderProducts extends JpaRepository<OrdersProductsEntity, Integer> {
 
     @Query("""
-            SELECT new com.fulldevcode.ecommerce.backend.infraestructure.DTO.ReportProductTotalSalesDTO (
+            SELECT new com.fulldevcode.ecommerce.backend.infraestructure.DTO.ReportTotalsDTO (
                 pr.name,
                 SUM ((orp.salePrice * orp.stock) - (pr.sale * orp.stock))
             )
@@ -25,10 +22,10 @@ public interface IOrderProducts extends JpaRepository<OrdersProductsEntity, Inte
             GROUP BY pr.id, pr.name
             ORDER BY SUM ((orp.salePrice * orp.stock) - (pr.sale * orp.stock)) DESC
             """)
-    List<ReportProductTotalSalesDTO> SearchTotalSalesProducts (PageRequest pageable);
+    List<ReportTotalsDTO> SearchTotalSalesProducts (PageRequest pageable);
 
     @Query("""
-            SELECT new com.fulldevcode.ecommerce.backend.infraestructure.DTO.ReportProductsMaxSalesDTO (
+            SELECT new com.fulldevcode.ecommerce.backend.infraestructure.DTO.ReportTotalsDTO (
                 pr.name,
                 SUM(orp.stock)
             )
@@ -39,10 +36,10 @@ public interface IOrderProducts extends JpaRepository<OrdersProductsEntity, Inte
             GROUP BY pr.id, pr.name
             ORDER BY SUM(orp.stock) DESC
             """)
-    List<ReportProductsMaxSalesDTO> SearchMaxSalesProduct(PageRequest pageable);
+    List<ReportTotalsDTO> SearchMaxSalesProduct(PageRequest pageable);
 
     @Query("""
-            SELECT new com.fulldevcode.ecommerce.backend.infraestructure.DTO.CategoriesTotalSalesDTO
+            SELECT new com.fulldevcode.ecommerce.backend.infraestructure.DTO.ReportTotalsDTO
             (
                 cat.name,
                 SUM((orp.salePrice * orp.stock) - (pr.sale * orp.stock))
@@ -55,10 +52,10 @@ public interface IOrderProducts extends JpaRepository<OrdersProductsEntity, Inte
             GROUP BY cat.id, cat.name
             ORDER BY SUM((orp.salePrice * orp.stock) - (pr.sale * orp.stock)) DESC
             """)
-    List<CategoriesTotalSalesDTO> SearchCategoriesTotalSales(PageRequest pageable);
+    List<ReportTotalsDTO> SearchCategoriesTotalSales(PageRequest pageable);
 
     @Query("""
-            SELECT new com.fulldevcode.ecommerce.backend.infraestructure.DTO.CategoriesMaxSalesDTO
+            SELECT new com.fulldevcode.ecommerce.backend.infraestructure.DTO.ReportTotalsDTO
             (
               cat.name,
               SUM(orp.stock)
@@ -71,5 +68,5 @@ public interface IOrderProducts extends JpaRepository<OrdersProductsEntity, Inte
             GROUP BY cat.id, cat.name
             ORDER BY SUM(orp.stock) DESC
             """)
-    List<CategoriesMaxSalesDTO> SearchCategoriesMaxSales(PageRequest pageable);
+    List<ReportTotalsDTO> SearchCategoriesMaxSales(PageRequest pageable);
 }

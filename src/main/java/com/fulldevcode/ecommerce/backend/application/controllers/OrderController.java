@@ -54,37 +54,37 @@ public class OrderController {
     }
 
     @GetMapping("/totalSalesProduct")
-    public ApiResponseDTO<List<ReportProductTotalSalesDTO>> TotalSalesProduct ()
+    public ApiResponseDTO<List<ReportTotalsDTO>> TotalSalesProduct ()
     {
-        ApiResponseDTO<List<ReportProductTotalSalesDTO>> totalSales = orderServices.ProductTotalSales();
+        ApiResponseDTO<List<ReportTotalsDTO>> totalSales = orderServices.ProductTotalSales();
         return totalSales;
     }
 
     @GetMapping("/maxSalesProduct")
-    public ApiResponseDTO<List<ReportProductsMaxSalesDTO>> MaxSalesProduct ()
+    public ApiResponseDTO<List<ReportTotalsDTO>> MaxSalesProduct ()
     {
-        ApiResponseDTO<List<ReportProductsMaxSalesDTO>> maxSales = orderServices.ProductMaxSales();
+        ApiResponseDTO<List<ReportTotalsDTO>> maxSales = orderServices.ProductMaxSales();
         return maxSales;
     }
 
     @GetMapping("/ordersForState")
-    public ApiResponseDTO<List<ReportStatesProductsDTO>> OrdersStatesTotal()
+    public ApiResponseDTO<List<ReportTotalsDTO>> OrdersStatesTotal()
     {
-        ApiResponseDTO<List<ReportStatesProductsDTO>> ordersStates = orderServices.OrdersTotalState();
+        ApiResponseDTO<List<ReportTotalsDTO>> ordersStates = orderServices.OrdersTotalState();
         return ordersStates;
     }
 
     @GetMapping("/totalSalesCategory")
-    public ApiResponseDTO<List<CategoriesTotalSalesDTO>> TotalSalesCategory()
+    public ApiResponseDTO<List<ReportTotalsDTO>> TotalSalesCategory()
     {
-        ApiResponseDTO<List<CategoriesTotalSalesDTO>> totalSales = orderServices.CategoriesTotalSales();
+        ApiResponseDTO<List<ReportTotalsDTO>> totalSales = orderServices.CategoriesTotalSales();
         return totalSales;
     }
 
-    @GetMapping("/maxSalesProduct")
-    public ApiResponseDTO<List<CategoriesMaxSalesDTO>> MaxSalesCategory()
+    @GetMapping("/maxSalesCategory")
+    public ApiResponseDTO<List<ReportTotalsDTO>> MaxSalesCategory()
     {
-        ApiResponseDTO<List<CategoriesMaxSalesDTO>> maxSales = orderServices.CategoriesMaxSales();
+        ApiResponseDTO<List<ReportTotalsDTO>> maxSales = orderServices.CategoriesMaxSales();
         return maxSales;
     }
 }

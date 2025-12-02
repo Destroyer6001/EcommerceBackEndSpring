@@ -11,12 +11,12 @@ public class OrderProductsUserDTO {
 
     private Integer stock;
 
-    private Integer totalPrice;
+    private Integer salePrice;
 
     public OrderProductsUserDTO(String productName, Integer stock, Integer totalPrice)
     {
         this.productName = productName;
         this.stock = stock;
-        this.totalPrice = totalPrice;
+        this.salePrice = totalPrice;
     }
 }

@@ -5,15 +5,15 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class CategoriesMaxSalesDTO {
+public class ReportTotalsDTO {
 
     private String name;
 
-    private Long numberProductsCategories;
+    private Long total;
 
-    public CategoriesMaxSalesDTO(String name, Long number)
+    public ReportTotalsDTO (String name, Long total)
     {
         this.name = name;
-        this.numberProductsCategories = number;
+        this.total = total;
     }
 }

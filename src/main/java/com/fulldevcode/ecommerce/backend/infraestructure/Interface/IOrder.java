@@ -1,7 +1,7 @@
 package com.fulldevcode.ecommerce.backend.infraestructure.Interface;
 
 import com.fulldevcode.ecommerce.backend.infraestructure.DTO.OrderDetailsDTO;
-import com.fulldevcode.ecommerce.backend.infraestructure.DTO.ReportStatesProductsDTO;
+import com.fulldevcode.ecommerce.backend.infraestructure.DTO.ReportTotalsDTO;
 import com.fulldevcode.ecommerce.backend.infraestructure.models.OrderEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -72,7 +72,7 @@ public interface IOrder extends JpaRepository<OrderEntity, Integer> {
     Optional<OrderEntity> FindByIdOrder(@Param("id") Integer id);
 
     @Query("""
-            SELECT new com.fulldevcode.ecommerce.backend.infraestructure.DTO.ReportStatesProductsDTO
+            SELECT com.fulldevcode.ecommerce.backend.infraestructure.DTO.ReportTotalsDTO
             (
                 CAST(ord.State AS string),
                 COUNT(ord)
@@ -80,5 +80,5 @@ public interface IOrder extends JpaRepository<OrderEntity, Integer> {
             FROM OrderEntity ord
             GROUP BY ord.State
             """)
-    List<ReportStatesProductsDTO> SearchTotalOrderStates();
+    List<ReportTotalsDTO> SearchTotalOrderStates();
 }

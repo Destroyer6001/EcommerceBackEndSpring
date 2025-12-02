@@ -302,11 +302,11 @@ public class OrderServices {
         return  productsNotStock;
     }
 
-    public ApiResponseDTO<List<ReportProductTotalSalesDTO>> ProductTotalSales()
+    public ApiResponseDTO<List<ReportTotalsDTO>> ProductTotalSales()
     {
         try
         {
-            List<ReportProductTotalSalesDTO> totalSales = orderProductsRespository.SearchTotalSalesProducts(PageRequest.of(0, 5));
+            List<ReportTotalsDTO> totalSales = orderProductsRespository.SearchTotalSalesProducts(PageRequest.of(0, 5));
             return ApiResponseDTO.success("Lista de ganancias total de venta por productos obtenida correctamente", totalSales);
         }
         catch (PersistenceException | IllegalArgumentException ex)
@@ -321,11 +321,11 @@ public class OrderServices {
         }
     }
 
-    public ApiResponseDTO<List<ReportProductsMaxSalesDTO>> ProductMaxSales()
+    public ApiResponseDTO<List<ReportTotalsDTO>> ProductMaxSales()
     {
         try
         {
-            List<ReportProductsMaxSalesDTO> maxSales = orderProductsRespository.SearchMaxSalesProduct(PageRequest.of(0 , 5));
+            List<ReportTotalsDTO> maxSales = orderProductsRespository.SearchMaxSalesProduct(PageRequest.of(0 , 5));
             return  ApiResponseDTO.success("Lista de ventas totales por producto obnida correctamente", maxSales);
         }
         catch (PersistenceException | IllegalArgumentException ex)
@@ -340,11 +340,11 @@ public class OrderServices {
         }
     }
 
-    public ApiResponseDTO<List<ReportStatesProductsDTO>> OrdersTotalState()
+    public ApiResponseDTO<List<ReportTotalsDTO>> OrdersTotalState()
     {
         try
         {
-            List<ReportStatesProductsDTO> totalStates = orderRepository.SearchTotalOrderStates();
+            List<ReportTotalsDTO> totalStates = orderRepository.SearchTotalOrderStates();
             return ApiResponseDTO.success("Ordenes totales por estado obtenido correctamente", totalStates);
         }
         catch (PersistenceException | IllegalArgumentException ex)
@@ -359,11 +359,11 @@ public class OrderServices {
         }
     }
 
-    public ApiResponseDTO<List<CategoriesTotalSalesDTO>> CategoriesTotalSales()
+    public ApiResponseDTO<List<ReportTotalsDTO>> CategoriesTotalSales()
     {
         try
         {
-            List<CategoriesTotalSalesDTO> categoriesTotalSales = orderProductsRespository.SearchCategoriesTotalSales(PageRequest.of(0 , 5));
+            List<ReportTotalsDTO> categoriesTotalSales = orderProductsRespository.SearchCategoriesTotalSales(PageRequest.of(0 , 5));
             return ApiResponseDTO.success("Lista de categorias con mas ganancias obtenidas correctamente", categoriesTotalSales);
 
         }
@@ -379,11 +379,11 @@ public class OrderServices {
         }
     }
 
-    public ApiResponseDTO<List<CategoriesMaxSalesDTO>> CategoriesMaxSales()
+    public ApiResponseDTO<List<ReportTotalsDTO>> CategoriesMaxSales()
     {
         try
         {
-            List<CategoriesMaxSalesDTO> categoriesMaxSale = orderProductsRespository.SearchCategoriesMaxSales(PageRequest.of(0, 5));
+            List<ReportTotalsDTO> categoriesMaxSale = orderProductsRespository.SearchCategoriesMaxSales(PageRequest.of(0, 5));
             return ApiResponseDTO.success("Lista de numero de ventas por categoria obtenido correctamente", categoriesMaxSale);
         }
         catch (PersistenceException | IllegalArgumentException ex)

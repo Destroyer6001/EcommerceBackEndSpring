@@ -21,6 +21,6 @@ public class OrderUserDTO {
 
     private Integer total;
 
-    private List<OrderProductsUserDTO> DetailsUser;
+    private List<OrderProductsUserDTO> detailsUser;
 
 }
