@@ -29,6 +29,9 @@ public class OrderEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
+    @Enumerated(EnumType.STRING)
+    private OrderState State;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrdersProductsEntity> ordersProducts;
 

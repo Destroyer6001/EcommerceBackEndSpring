@@ -1,6 +1,7 @@
 package com.fulldevcode.ecommerce.backend.infraestructure.Interface;
 
 import com.fulldevcode.ecommerce.backend.infraestructure.DTO.OrderDetailsDTO;
+import com.fulldevcode.ecommerce.backend.infraestructure.DTO.ReportStatesProductsDTO;
 import com.fulldevcode.ecommerce.backend.infraestructure.models.OrderEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,7 +20,8 @@ public interface IOrder extends JpaRepository<OrderEntity, Integer> {
                 CONCAT(us.firstname, ' ', us.lastname),
                 or.OrderDate,
                 or.Total,
-                us.address
+                us.address,
+                CAST(or.State AS string),
             )
             FROM OrderEntity or
             JOIN or.user us
@@ -33,7 +35,8 @@ public interface IOrder extends JpaRepository<OrderEntity, Integer> {
                 CONCAT(us.firstname, ' ', us.lastname),
                 or.OrderDate,
                 or.Total,
-                us.address
+                us.address,
+                CAST(or.State AS string),
             )
             FROM OrderEntity or
             JOIN or.user us
@@ -67,4 +70,15 @@ public interface IOrder extends JpaRepository<OrderEntity, Integer> {
             WHERE or.id = :id
             """)
     Optional<OrderEntity> FindByIdOrder(@Param("id") Integer id);
+
+    @Query("""
+            SELECT new com.fulldevcode.ecommerce.backend.infraestructure.DTO.ReportStatesProductsDTO
+            (
+                CAST(ord.State AS string),
+                COUNT(ord)
+            )
+            FROM OrderEntity ord
+            GROUP BY ord.State
+            """)
+    List<ReportStatesProductsDTO> SearchTotalOrderStates();
 }

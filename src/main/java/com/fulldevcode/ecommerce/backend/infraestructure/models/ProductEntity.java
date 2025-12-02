@@ -28,6 +28,7 @@ public class ProductEntity {
 
     private Integer stock;
 
+    @Column(columnDefinition = "TEXT")
     private String image;
 
     private Integer salePrice;

@@ -81,7 +81,7 @@ public class InventoryAdjustmentService {
         }
     }
 
-    public ApiResponseDTO<InventoryAdjustmentEntity> Create (InventoryAdjustmentDTO inventoryAdjustmentDTO)
+    public ApiResponseDTO<InventoryAdjustmentDTO> Create (InventoryAdjustmentDTO inventoryAdjustmentDTO)
     {
         try
         {
@@ -107,7 +107,7 @@ public class InventoryAdjustmentService {
 
             productRepository.save(product);
 
-            return  ApiResponseDTO.success("Se ha creado con exito el ajuste de inventario", inventoryAdjustment);
+            return  ApiResponseDTO.success("Se ha creado con exito el ajuste de inventario", inventoryAdjustmentDTO);
         }
         catch (PersistenceException | IllegalArgumentException ex)
         {
@@ -121,7 +121,7 @@ public class InventoryAdjustmentService {
         }
     }
 
-    public ApiResponseDTO<InventoryAdjustmentEntity> Edit (Integer id, InventoryAdjustmentDTO inventoryAdjustmentDTO)
+    public ApiResponseDTO<InventoryAdjustmentDTO> Edit (Integer id, InventoryAdjustmentDTO inventoryAdjustmentDTO)
     {
         try
         {
@@ -161,7 +161,7 @@ public class InventoryAdjustmentService {
 
             productRepository.save(product);
 
-            return ApiResponseDTO.success("El ajuste de inventario fue actualizado con exito", inventoryAdjustment);
+            return ApiResponseDTO.success("El ajuste de inventario fue actualizado con exito", inventoryAdjustmentDTO);
 
         }
         catch (PersistenceException | IllegalArgumentException ex)
@@ -176,7 +176,7 @@ public class InventoryAdjustmentService {
         }
     }
 
-    public ApiResponseDTO<InventoryAdjustmentEntity> Delete (Integer id)
+    public ApiResponseDTO<InventoryAdjustmentDTO> Delete (Integer id)
     {
         try
         {
@@ -208,7 +208,12 @@ public class InventoryAdjustmentService {
 
             productRepository.save(product);
 
-            return ApiResponseDTO.success("Se ha eliminado con exito el ajuste de inventario", inventoryAdjustment);
+            InventoryAdjustmentDTO inventoryDTO = new InventoryAdjustmentDTO();
+            inventoryDTO.setStock(inventoryAdjustment.getStock());
+            inventoryDTO.setPurchasePrice(inventoryAdjustment.getPurchasePrice());
+            inventoryDTO.setProductId(inventoryAdjustment.getProduct().getId());
+
+            return ApiResponseDTO.success("Se ha eliminado con exito el ajuste de inventario", inventoryDTO);
 
         }
         catch (PersistenceException | IllegalArgumentException ex)

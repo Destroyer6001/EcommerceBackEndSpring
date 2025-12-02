@@ -1,6 +1,7 @@
 package com.fulldevcode.ecommerce.backend.infraestructure.Interface;
 
 import com.fulldevcode.ecommerce.backend.infraestructure.DTO.UserDTO;
+import com.fulldevcode.ecommerce.backend.infraestructure.DTO.UserDetail;
 import com.fulldevcode.ecommerce.backend.infraestructure.models.UserEntity;
 import com.fulldevcode.ecommerce.backend.infraestructure.models.UserType;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,17 +22,18 @@ public interface IUser extends JpaRepository<UserEntity, Integer> {
     Optional<UserEntity> findByEmail(String email);
 
     @Query("""
-            SELECT new com.fulldevcode.ecommerce.backend.infraestructure.DTO.UserDTO(
+            SELECT new com.fulldevcode.ecommerce.backend.infraestructure.DTO.UserDetail(
                 us.id,
                 us.username,
                 us.lastname,
                 us.firstname,
                 us.email,
                 us.address,
-                us.cellphone,
-                us.userType
-            ) FROM UserEntity us
+                us.cellphone
+            )
+            FROM UserEntity us
             WHERE us.userType = :rol
+            ORDER BY us.id ASC
             """)
-    List<UserDTO> findUsersAdmin (@Param("rol") UserType rol);
+    List<UserDetail> findUsersAdmin (@Param("rol") UserType rol);
 }

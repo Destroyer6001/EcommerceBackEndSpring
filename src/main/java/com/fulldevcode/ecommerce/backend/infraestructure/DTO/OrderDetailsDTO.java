@@ -19,12 +19,15 @@ public class OrderDetailsDTO {
 
     private String address;
 
-    public OrderDetailsDTO(Integer id, String username, LocalDateTime orderDate, Integer total, String address)
+    private String state;
+
+    public OrderDetailsDTO(Integer id, String username, LocalDateTime orderDate, Integer total, String address, String state)
     {
         this.id = id;
         this.username = username;
         this.orderDate = orderDate;
         this.total = total;
         this.address = address;
+        this.state = state;
     }
 }

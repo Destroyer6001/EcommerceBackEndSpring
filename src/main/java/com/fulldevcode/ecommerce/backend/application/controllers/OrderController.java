@@ -1,10 +1,7 @@
 package com.fulldevcode.ecommerce.backend.application.controllers;
 
 import com.fulldevcode.ecommerce.backend.domain.Services.OrderServices;
-import com.fulldevcode.ecommerce.backend.infraestructure.DTO.ApiResponseDTO;
-import com.fulldevcode.ecommerce.backend.infraestructure.DTO.OrderDTO;
-import com.fulldevcode.ecommerce.backend.infraestructure.DTO.OrderDetailsDTO;
-import com.fulldevcode.ecommerce.backend.infraestructure.DTO.OrderUserDTO;
+import com.fulldevcode.ecommerce.backend.infraestructure.DTO.*;
 import com.fulldevcode.ecommerce.backend.infraestructure.models.OrderEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,9 +39,37 @@ public class OrderController {
     }
 
     @PostMapping("/orderCreate")
-    public ApiResponseDTO<OrderEntity> CreateOrder(@RequestBody OrderDTO orderDTO)
+    public ApiResponseDTO<OrderDTO> CreateOrder(@RequestBody OrderDTO orderDTO)
     {
-        ApiResponseDTO<OrderEntity> Order = orderServices.CreateOrder(orderDTO);
+        ApiResponseDTO<OrderDTO> Order = orderServices.CreateOrder(orderDTO);
         return Order;
+    }
+
+    @PostMapping("/changeState")
+    public  ApiResponseDTO<ChangeStateDTO> ChangeState(@RequestBody ChangeStateDTO stateDTO)
+    {
+        ApiResponseDTO<ChangeStateDTO> State = orderServices.ChangeStateOrder(stateDTO);
+        return State;
+    }
+
+    @GetMapping("/totalSalesProduct")
+    public ApiResponseDTO<List<ReportProductTotalSalesDTO>> TotalSalesProduct ()
+    {
+        ApiResponseDTO<List<ReportProductTotalSalesDTO>> totalSales = orderServices.ProductTotalSales();
+        return totalSales;
+    }
+
+    @GetMapping("/maxSalesProduct")
+    public ApiResponseDTO<List<ReportProductsMaxSalesDTO>> MaxSalesProduct ()
+    {
+        ApiResponseDTO<List<ReportProductsMaxSalesDTO>> maxSales = orderServices.ProductMaxSales();
+        return maxSales;
+    }
+
+    @GetMapping("/ordersForState")
+    public ApiResponseDTO<List<ReportStatesProductsDTO>> OrdersStatesTotal()
+    {
+        ApiResponseDTO<List<ReportStatesProductsDTO>> ordersStates = orderServices.OrdersTotalState();
+        return ordersStates;
     }
 }

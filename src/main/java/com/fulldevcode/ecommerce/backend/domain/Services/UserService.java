@@ -3,6 +3,7 @@ package com.fulldevcode.ecommerce.backend.domain.Services;
 import com.fulldevcode.ecommerce.backend.infraestructure.DTO.ApiResponseDTO;
 import com.fulldevcode.ecommerce.backend.infraestructure.DTO.LoginDTO;
 import com.fulldevcode.ecommerce.backend.infraestructure.DTO.UserDTO;
+import com.fulldevcode.ecommerce.backend.infraestructure.DTO.UserDetail;
 import com.fulldevcode.ecommerce.backend.infraestructure.Interface.IUser;
 import com.fulldevcode.ecommerce.backend.infraestructure.models.UserEntity;
 import com.fulldevcode.ecommerce.backend.infraestructure.models.UserType;
@@ -23,11 +24,11 @@ public class UserService {
         this.IUserRepository = UserRepo;
     }
 
-    public ApiResponseDTO<List<UserDTO>> IndexAdminUsers ()
+    public ApiResponseDTO<List<UserDetail>> IndexAdminUsers ()
     {
         try
         {
-            List<UserDTO> AdminUsers = IUserRepository.findUsersAdmin(UserType.ADMIN);
+            List<UserDetail> AdminUsers = IUserRepository.findUsersAdmin(UserType.ADMIN);
             return ApiResponseDTO.success("Lista de administradores obtenida con exito", AdminUsers);
         }
         catch (PersistenceException | IllegalArgumentException ex)
@@ -42,7 +43,7 @@ public class UserService {
         }
     }
 
-    public ApiResponseDTO<UserDTO> FindByIdUser(Integer id)
+    public ApiResponseDTO<UserDetail> FindByIdUser(Integer id)
     {
         try
         {
@@ -53,7 +54,7 @@ public class UserService {
                 return ApiResponseDTO.error("El usuario no esta registrado en el sistema");
             }
 
-            UserDTO user = new UserDTO();
+            UserDetail user = new UserDetail();
             user.setId(UserEntity.get().getId());
             user.setFirstname(UserEntity.get().getFirstname());
             user.setLastname(UserEntity.get().getLastname());
@@ -77,7 +78,7 @@ public class UserService {
         }
     }
 
-    public ApiResponseDTO<UserEntity> Create(UserDTO userdto)
+    public ApiResponseDTO<UserDTO> Create(UserDTO userdto)
     {
         try
         {
@@ -103,7 +104,7 @@ public class UserService {
 
             UserEntity userResponse = IUserRepository.save(user);
 
-            return ApiResponseDTO.success("Se ha creado con exito el nuevo usuario", userResponse);
+            return ApiResponseDTO.success("Se ha creado con exito el nuevo usuario", userdto);
         }
         catch (PersistenceException | IllegalArgumentException ex)
         {
@@ -117,7 +118,7 @@ public class UserService {
         }
     }
 
-    public  ApiResponseDTO<UserEntity> Edit(Integer id, UserDTO userDTO)
+    public  ApiResponseDTO<UserDTO> Edit(Integer id, UserDTO userDTO)
     {
         try
         {
@@ -152,7 +153,7 @@ public class UserService {
 
             IUserRepository.save(user);
 
-            return ApiResponseDTO.success("El usuario ha sido actualizado con exito", user);
+            return ApiResponseDTO.success("El usuario ha sido actualizado con exito", userDTO);
         }
         catch (PersistenceException | IllegalArgumentException ex)
         {
@@ -166,7 +167,7 @@ public class UserService {
         }
     }
 
-    public ApiResponseDTO<UserEntity> Delete(Integer id)
+    public ApiResponseDTO<UserDetail> Delete(Integer id)
     {
         try
         {
@@ -185,7 +186,16 @@ public class UserService {
             UserEntity user = UserById.get();
             IUserRepository.delete(user);
 
-            return ApiResponseDTO.success("El usuario ha sido eliminado con exito", user);
+            UserDetail userDetail = new UserDetail();
+            userDetail.setId(user.getId());
+            userDetail.setFirstname(user.getFirstname());
+            userDetail.setLastname(user.getLastname());
+            userDetail.setEmail(user.getEmail());
+            userDetail.setCellphone(user.getCellphone());
+            userDetail.setAddress(user.getAddress());
+            userDetail.setUsername(user.getUsername());
+
+            return ApiResponseDTO.success("El usuario ha sido eliminado con exito", userDetail);
 
         }
         catch (PersistenceException | IllegalArgumentException ex)

@@ -4,8 +4,10 @@ import com.fulldevcode.ecommerce.backend.domain.Services.UserService;
 import com.fulldevcode.ecommerce.backend.infraestructure.DTO.ApiResponseDTO;
 import com.fulldevcode.ecommerce.backend.infraestructure.DTO.LoginDTO;
 import com.fulldevcode.ecommerce.backend.infraestructure.DTO.UserDTO;
+import com.fulldevcode.ecommerce.backend.infraestructure.DTO.UserDetail;
 import com.fulldevcode.ecommerce.backend.infraestructure.models.UserEntity;
 import com.fulldevcode.ecommerce.backend.infraestructure.security.JwtUtil;
+import org.apache.catalina.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,37 +27,37 @@ public class UserController {
     }
 
     @GetMapping()
-    public ApiResponseDTO<List<UserDTO>> GetAllAdminUser()
+    public ApiResponseDTO<List<UserDetail>> GetAllAdminUser()
     {
-        ApiResponseDTO<List<UserDTO>> response = userService.IndexAdminUsers();
+        ApiResponseDTO<List<UserDetail>> response = userService.IndexAdminUsers();
         return  response;
     }
 
     @GetMapping("/userInfo/{id}")
-    public ApiResponseDTO<UserDTO> GetByIdUser(@PathVariable Integer id)
+    public ApiResponseDTO<UserDetail> GetByIdUser(@PathVariable Integer id)
     {
-        ApiResponseDTO<UserDTO> response = userService.FindByIdUser(id);
+        ApiResponseDTO<UserDetail> response = userService.FindByIdUser(id);
         return response;
     }
 
     @PostMapping("/register")
-    public ApiResponseDTO<UserEntity> CreateUser (@RequestBody UserDTO user)
+    public ApiResponseDTO<UserDTO> CreateUser (@RequestBody UserDTO user)
     {
-        ApiResponseDTO<UserEntity> response = userService.Create(user);
+        ApiResponseDTO<UserDTO> response = userService.Create(user);
         return response;
     }
 
     @PutMapping("editUser/{id}")
-    public ApiResponseDTO<UserEntity> UpdateUser (@PathVariable Integer id, @RequestBody UserDTO user)
+    public ApiResponseDTO<UserDTO> UpdateUser (@PathVariable Integer id, @RequestBody UserDTO user)
     {
-        ApiResponseDTO<UserEntity> response = userService.Edit(id, user);
+        ApiResponseDTO<UserDTO> response = userService.Edit(id, user);
         return response;
     }
 
     @DeleteMapping("/{id}")
-    public ApiResponseDTO<UserEntity> DeleteUser (@PathVariable Integer id)
+    public ApiResponseDTO<UserDetail> DeleteUser (@PathVariable Integer id)
     {
-        ApiResponseDTO<UserEntity> response = userService.Delete(id);
+        ApiResponseDTO<UserDetail> response = userService.Delete(id);
         return response;
     }
 

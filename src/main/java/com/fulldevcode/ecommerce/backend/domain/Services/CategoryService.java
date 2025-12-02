@@ -70,7 +70,7 @@ public class CategoryService {
         }
     }
 
-    public  ApiResponseDTO<CategoryEntity> Create(CategoryDTO categoryDTO)
+    public  ApiResponseDTO<CategoryDTO> Create(CategoryDTO categoryDTO)
     {
         try
         {
@@ -86,7 +86,7 @@ public class CategoryService {
             category.setDescription(categoryDTO.getDescription());
             CategoryEntity categorySave = categoryResposity.save(category);
 
-            return ApiResponseDTO.success("La categoria ha sido creado con exito", categorySave);
+            return ApiResponseDTO.success("La categoria ha sido creado con exito", categoryDTO);
         }
         catch (PersistenceException | IllegalArgumentException ex)
         {
@@ -100,7 +100,7 @@ public class CategoryService {
         }
     }
 
-    public  ApiResponseDTO<CategoryEntity> Edit(Integer id, CategoryDTO CategoryDTO)
+    public  ApiResponseDTO<CategoryDTO> Edit(Integer id, CategoryDTO CategoryDTO)
     {
         try
         {
@@ -127,7 +127,7 @@ public class CategoryService {
             CategoryUpdate.setDescription(CategoryDTO.getDescription());
             CategoryEntity ResultCategory = categoryResposity.save(CategoryUpdate);
 
-            return  ApiResponseDTO.success("La categoria ha sido actualizada con exito", ResultCategory);
+            return  ApiResponseDTO.success("La categoria ha sido actualizada con exito", CategoryDTO);
         }
         catch (PersistenceException | IllegalArgumentException ex)
         {
@@ -141,7 +141,7 @@ public class CategoryService {
         }
     }
 
-    public ApiResponseDTO<CategoryEntity> Delete(Integer id)
+    public ApiResponseDTO<CategoryDTO> Delete(Integer id)
     {
         try
         {
@@ -157,8 +157,9 @@ public class CategoryService {
                 return ApiResponseDTO.error("La categoria no se encuentra registrada en el sistema");
             }
 
+            CategoryDTO categoryDTO = new CategoryDTO(Category.getId(), Category.getName(), Category.getDescription());
             categoryResposity.delete(Category);
-            return ApiResponseDTO.success("La categoria ha sido eliminada con exito", Category);
+            return ApiResponseDTO.success("La categoria ha sido eliminada con exito", categoryDTO);
         }
         catch (PersistenceException | IllegalArgumentException ex)
         {

@@ -17,6 +17,8 @@ public class OrderUserDTO {
 
     private LocalDateTime orderDate;
 
+    private String state;
+
     private Integer total;
 
     private List<OrderProductsUserDTO> DetailsUser;

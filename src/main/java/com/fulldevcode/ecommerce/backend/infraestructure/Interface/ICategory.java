@@ -25,7 +25,8 @@ public interface ICategory extends JpaRepository<CategoryEntity, Integer>
                 c.name,
                 c.description
             )
-            FROM CategoryEntity c""")
+            FROM CategoryEntity c
+            ORDER BY c.id ASC""")
     List<CategoryDTO> findALlCategories();
 
 }

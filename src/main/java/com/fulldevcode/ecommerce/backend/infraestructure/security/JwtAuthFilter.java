@@ -1,6 +1,7 @@
 package com.fulldevcode.ecommerce.backend.infraestructure.security;
 
 import com.fulldevcode.ecommerce.backend.infraestructure.Interface.IUser;
+import com.fulldevcode.ecommerce.backend.infraestructure.models.UserEntity;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -40,24 +42,38 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = header.substring(7);
+        try {
+            String token = header.substring(7);
 
-        if (jwtUtil.ValidateToken(token)) {
-            String email = jwtUtil.GetEmail(token);
+            if (jwtUtil.ValidateToken(token)) {
+                String email = jwtUtil.GetEmail(token);
+                Optional<UserEntity> userOptional = userRepository.findByEmail(email);
 
-            userRepository.findByEmail(email).ifPresent(usuario -> {
-                var authorities = List.of(new SimpleGrantedAuthority("ROLE_" + usuario.getUserType().toString()));
+                if (userOptional.isPresent()) {
 
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(usuario, null, authorities);
+                    UserEntity usuario = userOptional.get();
 
-                authentication.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
+                    var authorities = List.of(new SimpleGrantedAuthority("ROLE_" + usuario.getUserType().toString()));
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            });
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(usuario, null, authorities);
+
+                    authentication.setDetails(
+                            new WebAuthenticationDetailsSource().buildDetails(request)
+                    );
+
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                    filterChain.doFilter(request, response);
+
+                } else {
+                    SecurityContextHolder.clearContext();
+                }
+            } else {
+                SecurityContextHolder.clearContext();
+            }
+        } catch (Exception e) {
+            SecurityContextHolder.clearContext();
         }
-        filterChain.doFilter(request, response);
     }
 }

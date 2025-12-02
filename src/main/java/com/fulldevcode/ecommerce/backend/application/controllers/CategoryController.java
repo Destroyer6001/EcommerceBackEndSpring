@@ -33,23 +33,23 @@ public class CategoryController {
     }
 
     @PostMapping
-    public  ApiResponseDTO<CategoryEntity> CreateCategory(@RequestBody CategoryDTO CategoryDTO)
+    public  ApiResponseDTO<CategoryDTO> CreateCategory(@RequestBody CategoryDTO CategoryDTO)
     {
-        ApiResponseDTO<CategoryEntity> Category = categoryService.Create(CategoryDTO);
+        ApiResponseDTO<CategoryDTO> Category = categoryService.Create(CategoryDTO);
         return Category;
     }
 
     @PutMapping("/{id}")
-    public  ApiResponseDTO<CategoryEntity> UpdateCategory(@PathVariable Integer id, @RequestBody CategoryDTO CategoryDTO)
+    public  ApiResponseDTO<CategoryDTO> UpdateCategory(@PathVariable Integer id, @RequestBody CategoryDTO CategoryDTO)
     {
-        ApiResponseDTO<CategoryEntity> Category = categoryService.Edit(id, CategoryDTO);
+        ApiResponseDTO<CategoryDTO> Category = categoryService.Edit(id, CategoryDTO);
         return Category;
     }
 
     @DeleteMapping("/{id}")
-    public  ApiResponseDTO<CategoryEntity> DeleteCategory(@PathVariable Integer id)
+    public  ApiResponseDTO<CategoryDTO> DeleteCategory(@PathVariable Integer id)
     {
-        ApiResponseDTO<CategoryEntity> Category = categoryService.Delete(id);
+        ApiResponseDTO<CategoryDTO> Category = categoryService.Delete(id);
         return Category;
     }
 }

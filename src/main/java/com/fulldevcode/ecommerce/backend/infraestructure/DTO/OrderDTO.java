@@ -11,8 +11,6 @@ public class OrderDTO {
 
     private Integer id;
 
-    private Integer userId;
-
     private Integer total;
 
     private List<OrderProductsDTO> OrderProducts;

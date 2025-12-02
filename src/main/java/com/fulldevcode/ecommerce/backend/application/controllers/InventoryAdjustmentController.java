@@ -35,22 +35,22 @@ public class InventoryAdjustmentController {
     }
 
     @PostMapping
-    public ApiResponseDTO<InventoryAdjustmentEntity> CreateInventoryAdjustment (@RequestBody InventoryAdjustmentDTO inventoryAdjustmentDTO)
+    public ApiResponseDTO<InventoryAdjustmentDTO> CreateInventoryAdjustment (@RequestBody InventoryAdjustmentDTO inventoryAdjustmentDTO)
     {
-        ApiResponseDTO<InventoryAdjustmentEntity> inventoryAdjustment = inventoryAdjustmentService.Create(inventoryAdjustmentDTO);
+        ApiResponseDTO<InventoryAdjustmentDTO> inventoryAdjustment = inventoryAdjustmentService.Create(inventoryAdjustmentDTO);
         return inventoryAdjustment;
     }
 
     @PutMapping("/{id}")
-    public ApiResponseDTO<InventoryAdjustmentEntity> EditInventoryAdjustment (@PathVariable Integer id, @RequestBody InventoryAdjustmentDTO inventoryAdjustmentDTO)
+    public ApiResponseDTO<InventoryAdjustmentDTO> EditInventoryAdjustment (@PathVariable Integer id, @RequestBody InventoryAdjustmentDTO inventoryAdjustmentDTO)
     {
-        ApiResponseDTO<InventoryAdjustmentEntity> inventoryAdjustment = inventoryAdjustmentService.Edit(id, inventoryAdjustmentDTO);
+        ApiResponseDTO<InventoryAdjustmentDTO> inventoryAdjustment = inventoryAdjustmentService.Edit(id, inventoryAdjustmentDTO);
         return inventoryAdjustment;
     }
 
     @DeleteMapping("/{id}")
-    public ApiResponseDTO<InventoryAdjustmentEntity> DeleteInventoryAdjustment (@PathVariable Integer id) {
-        ApiResponseDTO<InventoryAdjustmentEntity> inventoryAdjustment = inventoryAdjustmentService.Delete(id);
+    public ApiResponseDTO<InventoryAdjustmentDTO> DeleteInventoryAdjustment (@PathVariable Integer id) {
+        ApiResponseDTO<InventoryAdjustmentDTO> inventoryAdjustment = inventoryAdjustmentService.Delete(id);
         return inventoryAdjustment;
     }
 }

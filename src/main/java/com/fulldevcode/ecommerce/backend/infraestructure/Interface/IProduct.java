@@ -32,6 +32,7 @@ public interface IProduct extends JpaRepository<ProductEntity, Integer> {
                 po.image
             ) FROM ProductEntity po
               JOIN po.category ca
+              ORDER BY po.id ASC
             """)
     List<ProductDetailsDTO> GetAllProducts();
 }

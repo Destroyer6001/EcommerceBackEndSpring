@@ -36,23 +36,23 @@ public class ProductController {
     }
 
     @PostMapping
-    public ApiResponseDTO<ProductEntity> CreateProduct(@RequestBody ProductDTO productDTO)
+    public ApiResponseDTO<ProductDTO> CreateProduct(@RequestBody ProductDTO productDTO)
     {
-        ApiResponseDTO<ProductEntity> product = productService.Create(productDTO);
+        ApiResponseDTO<ProductDTO> product = productService.Create(productDTO);
         return product;
     }
 
     @PutMapping("/{id}")
-    public ApiResponseDTO<ProductEntity> EditProduct(@PathVariable Integer id, @RequestBody ProductDTO productDTO)
+    public ApiResponseDTO<ProductDTO> EditProduct(@PathVariable Integer id, @RequestBody ProductDTO productDTO)
     {
-        ApiResponseDTO<ProductEntity> product = productService.Edit(id, productDTO);
+        ApiResponseDTO<ProductDTO> product = productService.Edit(id, productDTO);
         return product;
     }
 
     @DeleteMapping("/{id}")
-    public  ApiResponseDTO<ProductEntity> DeleteProduct (@PathVariable Integer id)
+    public  ApiResponseDTO<ProductDTO> DeleteProduct (@PathVariable Integer id)
     {
-        ApiResponseDTO<ProductEntity> product = productService.Delete(id);
+        ApiResponseDTO<ProductDTO> product = productService.Delete(id);
         return product;
     }
 }

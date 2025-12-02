@@ -64,6 +64,7 @@ public class ProductServices {
             product.setSalePrice(productEntity.get().getSalePrice());
             product.setCategoryId(productEntity.get().getCategory().getId());
             product.setCreatedDate(productEntity.get().getCreatedDate());
+            product.setImagen(productEntity.get().getImage());
 
             return  ApiResponseDTO.success("Producto obtenido con exito", product);
 
@@ -79,7 +80,7 @@ public class ProductServices {
         }
     }
 
-    public ApiResponseDTO<ProductEntity> Create (ProductDTO productDTO)
+    public ApiResponseDTO<ProductDTO> Create (ProductDTO productDTO)
     {
         try
         {
@@ -113,7 +114,7 @@ public class ProductServices {
 
             ProductEntity productResponse = productRepository.save(product);
 
-            return ApiResponseDTO.success("Producto creado con exito", productResponse);
+            return ApiResponseDTO.success("Producto creado con exito", productDTO);
 
         }
         catch (PersistenceException | IllegalArgumentException ex)
@@ -128,7 +129,7 @@ public class ProductServices {
         }
     }
 
-    public ApiResponseDTO<ProductEntity> Edit (Integer id, ProductDTO productDTO)
+    public ApiResponseDTO<ProductDTO> Edit (Integer id, ProductDTO productDTO)
     {
         try
         {
@@ -169,7 +170,7 @@ public class ProductServices {
 
             productRepository.save(product);
 
-            return ApiResponseDTO.success("Se ha actualizado con exito la informacion del producto", product);
+            return ApiResponseDTO.success("Se ha actualizado con exito la informacion del producto", productDTO);
 
         }
         catch (PersistenceException | IllegalArgumentException ex)
@@ -184,7 +185,7 @@ public class ProductServices {
         }
     }
 
-    public ApiResponseDTO<ProductEntity> Delete (Integer id) {
+    public ApiResponseDTO<ProductDTO> Delete (Integer id) {
         try
         {
             Optional<ProductEntity> productSearch = productRepository.findById(id);
@@ -195,7 +196,19 @@ public class ProductServices {
             }
 
             productRepository.delete(productSearch.get());
-            return ApiResponseDTO.success("El producto ha sido eliminado con exito", productSearch.get());
+
+            ProductDTO product = new ProductDTO();
+            product.setId(productSearch.get().getId());
+            product.setName(productSearch.get().getName());
+            product.setDescription(productSearch.get().getDescription());
+            product.setSale(productSearch.get().getSale());
+            product.setSalePrice(productSearch.get().getSalePrice());
+            product.setStock(productSearch.get().getStock());
+            product.setImagen(productSearch.get().getImage());
+            product.setCreatedDate(productSearch.get().getCreatedDate());
+            product.setCategoryId(productSearch.get().getCategory().getId());
+
+            return ApiResponseDTO.success("El producto ha sido eliminado con exito", product);
         }
         catch (PersistenceException | IllegalArgumentException ex)
         {
