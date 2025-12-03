@@ -21,7 +21,7 @@ public interface IOrder extends JpaRepository<OrderEntity, Integer> {
                 or.OrderDate,
                 or.Total,
                 us.address,
-                CAST(or.State AS string),
+                CAST(or.State AS string)
             )
             FROM OrderEntity or
             JOIN or.user us
@@ -36,7 +36,7 @@ public interface IOrder extends JpaRepository<OrderEntity, Integer> {
                 or.OrderDate,
                 or.Total,
                 us.address,
-                CAST(or.State AS string),
+                CAST(or.State AS string)
             )
             FROM OrderEntity or
             JOIN or.user us
@@ -51,7 +51,8 @@ public interface IOrder extends JpaRepository<OrderEntity, Integer> {
                 CONCAT(us.firstname, ' ', us.lastname),
                 or.OrderDate,
                 or.Total,
-                us.address
+                us.address,
+                CAST(or.State AS string)
             )
             FROM OrderEntity or
             JOIN or.user us
