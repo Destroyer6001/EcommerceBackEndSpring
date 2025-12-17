@@ -18,7 +18,7 @@ public class CategoryController {
         this.categoryService = categoryServ;
     }
 
-    @GetMapping
+    @GetMapping("/getAll")
     public ApiResponseDTO<List<CategoryDTO>> GetALlCategories ()
     {
         ApiResponseDTO<List<CategoryDTO>> Categories = categoryService.IndexCategories();

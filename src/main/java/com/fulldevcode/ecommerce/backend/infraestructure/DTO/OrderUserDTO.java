@@ -21,6 +21,8 @@ public class OrderUserDTO {
 
     private Integer total;
 
+    private String address;
+
     private List<OrderProductsUserDTO> detailsUser;
 
 }

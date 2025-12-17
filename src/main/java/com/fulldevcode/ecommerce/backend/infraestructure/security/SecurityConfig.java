@@ -105,6 +105,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/orders/orderById/*").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
                         .requestMatchers("/api/orders/changeState").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
                         .requestMatchers("/api/orders/getOrdersUser/*").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                        .requestMatchers("/api/categories/getAll").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
 
                         // routes only user
                         .requestMatchers("/api/orders/orderCreate").hasAuthority("ROLE_USER")

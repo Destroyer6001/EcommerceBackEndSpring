@@ -101,6 +101,7 @@ public class OrderServices {
             order.setOrderDate(orderEntity.getOrderDate());
             order.setState(orderEntity.getState().toString());
             order.setTotal(orderEntity.getTotal());
+            order.setAddress(orderEntity.getUser().getAddress());
             order.setDetailsUser(orderDetails);
 
             return ApiResponseDTO.success("Se ha obtenido con exito la informacion de la orden", order);
@@ -129,6 +130,11 @@ public class OrderServices {
             {
                 String mensagge = String.join("\n", Errors);
                 return ApiResponseDTO.error(mensagge);
+            }
+
+            if (orderDTO.getOrderProducts().isEmpty())
+            {
+                return ApiResponseDTO.error("No se puede registrar una orden sin productos");
             }
 
             int UserId = this.GetIdByUser();

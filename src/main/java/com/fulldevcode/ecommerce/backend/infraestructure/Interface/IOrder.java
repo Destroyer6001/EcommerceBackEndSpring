@@ -25,6 +25,7 @@ public interface IOrder extends JpaRepository<OrderEntity, Integer> {
             )
             FROM OrderEntity or
             JOIN or.user us
+            ORDER BY or.OrderDate DESC
             """)
     List<OrderDetailsDTO> FindAllOrders();
 
@@ -41,6 +42,7 @@ public interface IOrder extends JpaRepository<OrderEntity, Integer> {
             FROM OrderEntity or
             JOIN or.user us
             WHERE us.id = :id
+            ORDER BY or.OrderDate DESC
             """)
     List<OrderDetailsDTO> FindAllOrdersUser(@Param("id") Integer id);
 
@@ -73,7 +75,7 @@ public interface IOrder extends JpaRepository<OrderEntity, Integer> {
     Optional<OrderEntity> FindByIdOrder(@Param("id") Integer id);
 
     @Query("""
-            SELECT com.fulldevcode.ecommerce.backend.infraestructure.DTO.ReportTotalsDTO
+            SELECT new com.fulldevcode.ecommerce.backend.infraestructure.DTO.ReportTotalsDTO
             (
                 CAST(ord.State AS string),
                 COUNT(ord)
