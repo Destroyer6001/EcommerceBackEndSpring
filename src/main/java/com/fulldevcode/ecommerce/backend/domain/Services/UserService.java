@@ -89,7 +89,7 @@ public class UserService {
                 return  ApiResponseDTO.error("Ya hay un usuario registrado con este correo");
             }
 
-            UserType UserRole = userdto.getTypeUser() == 1 ? UserType.ADMIN : UserType.USER;
+            UserType UserRole = userdto.getTypeUser() == 1 ? UserType.ADMIN : userdto.getTypeUser() == 2 ? UserType.USER : UserType.DELIVERY;
             String password = passwordEncoder.encode(userdto.getPassword());
 
             UserEntity user = new UserEntity();
@@ -230,6 +230,25 @@ public class UserService {
 
             return ApiResponseDTO.success("Usuario logueado con exito", User);
 
+        }
+        catch (PersistenceException | IllegalArgumentException ex)
+        {
+            String message = "Ha ocurrido un error" + ex.getMessage();
+            return  ApiResponseDTO.error(message);
+        }
+        catch (Exception ex)
+        {
+            String message = "Ha ocurrido un error " + ex.getMessage();
+            return  ApiResponseDTO.error(message);
+        }
+    }
+
+    public ApiResponseDTO<List<UserDetail>> GetDeliveryUsers()
+    {
+        try
+        {
+            List<UserDetail> userDetails = this.IUserRepository.findUserDelivery(UserType.DELIVERY);
+            return ApiResponseDTO.success("Se ha encontrado con exito la lista de domiciliarios", userDetails);
         }
         catch (PersistenceException | IllegalArgumentException ex)
         {

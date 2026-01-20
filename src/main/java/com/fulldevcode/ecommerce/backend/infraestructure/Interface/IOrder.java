@@ -3,6 +3,7 @@ package com.fulldevcode.ecommerce.backend.infraestructure.Interface;
 import com.fulldevcode.ecommerce.backend.infraestructure.DTO.OrderDetailsDTO;
 import com.fulldevcode.ecommerce.backend.infraestructure.DTO.ReportTotalsDTO;
 import com.fulldevcode.ecommerce.backend.infraestructure.models.OrderEntity;
+import com.fulldevcode.ecommerce.backend.infraestructure.models.OrderState;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,6 +29,23 @@ public interface IOrder extends JpaRepository<OrderEntity, Integer> {
             ORDER BY or.OrderDate DESC
             """)
     List<OrderDetailsDTO> FindAllOrders();
+
+    @Query("""
+            SELECT new com.fulldevcode.ecommerce.backend.infraestructure.DTO.OrderDetailsDTO
+            (
+                or.id,
+                CONCAT (us.firstname, ' ', us.lastname),
+                or.OrderDate,
+                or.Total,
+                us.address,
+                CAST (or.State as string)
+            )
+            FROM OrderEntity or
+            JOIN or.user us
+            WHERE or.State = :state
+            ORDER BY or.OrderDate DESC
+            """)
+    List<OrderDetailsDTO> FindAllPendingOrders(@Param("state")OrderState orderState);
 
     @Query("""
             SELECT new com.fulldevcode.ecommerce.backend.infraestructure.DTO.OrderDetailsDTO

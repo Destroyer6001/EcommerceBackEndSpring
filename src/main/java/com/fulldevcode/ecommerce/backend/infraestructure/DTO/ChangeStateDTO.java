@@ -6,7 +6,4 @@ import lombok.Data;
 public class ChangeStateDTO {
 
     private int orderId;
-
-    private int state;
-
 }

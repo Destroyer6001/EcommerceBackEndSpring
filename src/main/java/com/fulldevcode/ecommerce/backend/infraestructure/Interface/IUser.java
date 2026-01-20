@@ -36,4 +36,21 @@ public interface IUser extends JpaRepository<UserEntity, Integer> {
             ORDER BY us.id ASC
             """)
     List<UserDetail> findUsersAdmin (@Param("rol") UserType rol);
+
+    @Query("""
+            SELECT new com.fulldevcode.ecommerce.backend.infraestructure.DTO.UserDetail
+            (
+                us.id,
+                us.username,
+                us.lastname,
+                us.firstname,
+                us.email,
+                us.address,
+                us.cellphone
+            )
+            FROM UserEntity us
+            WHERE us.userType = :rol
+            ORDER BY us.id ASC
+            """)
+    List<UserDetail> findUserDelivery(@Param("rol") UserType rol);
 }

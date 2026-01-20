@@ -1,5 +1,5 @@
 package com.fulldevcode.ecommerce.backend.infraestructure.models;
 
-public enum OrderState {
-    PENDING, SEND, COMPLETED, CANCEL
+public enum ShipmentState {
+    PENDING, COMPLETED, CANCEL
 }

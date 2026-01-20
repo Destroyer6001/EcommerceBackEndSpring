@@ -77,4 +77,11 @@ public class UserController {
             return  ApiResponseDTO.error(UserLoginResponse.getMessage());
         }
     }
+
+    @GetMapping("/getAllDeliveries")
+    public ApiResponseDTO<List<UserDetail>> GetAllDeliveries()
+    {
+        ApiResponseDTO<List<UserDetail>> Deliveries = this.userService.GetDeliveryUsers();
+        return Deliveries;
+    }
 }

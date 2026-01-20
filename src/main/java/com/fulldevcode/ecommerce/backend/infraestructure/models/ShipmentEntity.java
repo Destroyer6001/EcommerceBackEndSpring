@@ -10,31 +10,34 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "orders")
-@Data
+@Table(name = "Shipments")
 @Builder
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
-public class OrderEntity {
+@AllArgsConstructor
+public class ShipmentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private LocalDateTime OrderDate;
+    @Enumerated(EnumType.STRING)
+    private ShipmentState state;
 
-    private Integer Total;
+    private LocalDateTime date;
+
+    @Column(nullable = true)
+    private LocalDateTime deliveryDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @Enumerated(EnumType.STRING)
-    private OrderState State;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private OrderEntity order;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrdersProductsEntity> ordersProducts;
+    @OneToOne(mappedBy = "shipment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private PaymentEntity payment;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ShipmentEntity> shipments;
 }

@@ -10,31 +10,25 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "orders")
-@Data
+@Table(name = "payslips")
 @Builder
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderEntity {
+public class PayslipEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private LocalDateTime OrderDate;
+    private LocalDateTime paymentDate;
 
-    private Integer Total;
+    private Long total;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @Enumerated(EnumType.STRING)
-    private OrderState State;
-
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrdersProductsEntity> ordersProducts;
-
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ShipmentEntity> shipments;
+    @OneToMany(mappedBy = "payslip", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PaymentEntity> payments;
 }

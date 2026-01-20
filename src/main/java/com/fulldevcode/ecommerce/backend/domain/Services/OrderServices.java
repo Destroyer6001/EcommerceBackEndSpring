@@ -1,18 +1,17 @@
 package com.fulldevcode.ecommerce.backend.domain.Services;
 
 import com.fulldevcode.ecommerce.backend.infraestructure.DTO.*;
-import com.fulldevcode.ecommerce.backend.infraestructure.Interface.IOrder;
-import com.fulldevcode.ecommerce.backend.infraestructure.Interface.IOrderProducts;
-import com.fulldevcode.ecommerce.backend.infraestructure.Interface.IProduct;
-import com.fulldevcode.ecommerce.backend.infraestructure.Interface.IUser;
+import com.fulldevcode.ecommerce.backend.infraestructure.Interface.*;
 import com.fulldevcode.ecommerce.backend.infraestructure.models.*;
 
 import jakarta.persistence.PersistenceException;
 import jakarta.transaction.Transactional;
+import org.hibernate.query.Order;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -26,13 +25,15 @@ public class OrderServices {
     private final IProduct productRespository;
     private final IOrderProducts orderProductsRespository;
     private final IUser userRepository;
+    private final IShipment shipmentRepository;
 
-    public OrderServices(IOrder orderRepo, IProduct productRepo, IOrderProducts orderProductsRepo, IUser userRepo)
+    public OrderServices(IOrder orderRepo, IProduct productRepo, IOrderProducts orderProductsRepo, IUser userRepo,IShipment shipmentRepo)
     {
         this.orderRepository = orderRepo;
         this.productRespository = productRepo;
         this.orderProductsRespository = orderProductsRepo;
         this.userRepository = userRepo;
+        this.shipmentRepository = shipmentRepo;
     }
 
     public ApiResponseDTO<List<OrderDetailsDTO>> FinAllOrders()
@@ -189,15 +190,23 @@ public class OrderServices {
     }
 
     @Transactional
-    public ApiResponseDTO<ChangeStateDTO> ChangeStateOrder(ChangeStateDTO stateDTO)
+    public ApiResponseDTO<Integer> CancelOrder (Integer id)
     {
         try
         {
-            System.out.println(stateDTO);
             int userId = GetIdByUser();
+
             Optional<UserEntity> UserResponse = userRepository.findById(userId);
-            Optional<OrderEntity> Order = orderRepository.FindByIdOrder(stateDTO.getOrderId());
+            Optional<OrderEntity> Order = orderRepository.FindByIdOrder(id);
+            Optional<ShipmentEntity> Shipment = shipmentRepository.FindByOrderId(id, List.of(ShipmentState.PENDING));
+
             String message = "";
+
+            if (Shipment.isPresent())
+            {
+                message = "Ya hay una orden de entrega pendiente asociada al pedido por ende no se puede cancelar";
+                return ApiResponseDTO.error(message);
+            }
 
             if (UserResponse.isEmpty())
             {
@@ -217,15 +226,9 @@ public class OrderServices {
                 return ApiResponseDTO.error(message);
             }
 
-            if (stateDTO.getState() == 2 && UserResponse.get().getUserType() == UserType.USER)
-            {
-                message = "Un usuario normal no puede modificar el estado a completado";
-                return ApiResponseDTO.error(message);
-            }
-
             UserEntity User = UserResponse.get();
 
-            if (stateDTO.getState() == 3 && User.getUserType() == UserType.USER)
+            if (User.getUserType() == UserType.USER)
             {
                 LocalDateTime dateActually = LocalDateTime.now();
                 long dayDiff = ChronoUnit.DAYS.between(Order.get().getOrderDate(), dateActually);
@@ -238,27 +241,24 @@ public class OrderServices {
             }
 
             OrderEntity OrderUpdate = Order.get();
-            OrderState state = stateDTO.getState() == 2 ? OrderState.COMPLETED : OrderState.CANCEL;
+            OrderState state = OrderState.CANCEL;
             OrderUpdate.setState(state);
             orderRepository.save(OrderUpdate);
 
-            if (stateDTO.getState() == 3)
+            List<ProductEntity> Products = productRespository.findAll();
+
+            for(OrdersProductsEntity ordersProducts : OrderUpdate.getOrdersProducts())
             {
-                List<ProductEntity> Products = productRespository.findAll();
+                ProductEntity product = Products.stream().filter(p -> p.getId().equals(ordersProducts.getProduct().getId()))
+                        .findFirst()
+                        .orElse(null);
 
-                for(OrdersProductsEntity ordersProducts : OrderUpdate.getOrdersProducts())
-                {
-                    ProductEntity product = Products.stream().filter(p -> p.getId().equals(ordersProducts.getProduct().getId()))
-                            .findFirst()
-                            .orElse(null);
-
-                    int stock = product.getStock() + ordersProducts.getStock();
-                    product.setStock(stock);
-                    productRespository.save(product);
-                }
+                int stock = product.getStock() + ordersProducts.getStock();
+                product.setStock(stock);
+                productRespository.save(product);
             }
 
-            return ApiResponseDTO.success("Se ha actualizado el estado con exito", stateDTO);
+            return ApiResponseDTO.success("Se ha actualizado el estado con exito", OrderUpdate.getId());
         }
         catch (PersistenceException | IllegalArgumentException ex)
         {
@@ -391,6 +391,25 @@ public class OrderServices {
         {
             List<ReportTotalsDTO> categoriesMaxSale = orderProductsRespository.SearchCategoriesMaxSales(PageRequest.of(0, 5));
             return ApiResponseDTO.success("Lista de numero de ventas por categoria obtenido correctamente", categoriesMaxSale);
+        }
+        catch (PersistenceException | IllegalArgumentException ex)
+        {
+            String message = "Ha ocurrido un error" + ex.getMessage();
+            return  ApiResponseDTO.error(message);
+        }
+        catch (Exception ex)
+        {
+            String message = "Ha ocurrido un error " + ex.getMessage();
+            return  ApiResponseDTO.error(message);
+        }
+    }
+
+    public ApiResponseDTO<List<OrderDetailsDTO>> GetOrdersPendingDelivery()
+    {
+        try
+        {
+            List<OrderDetailsDTO> OrdersPending = this.orderRepository.FindAllPendingOrders(OrderState.PENDING);
+            return ApiResponseDTO.success("Se ha obtenido el listado de las ordenes pendientes por entregar", OrdersPending);
         }
         catch (PersistenceException | IllegalArgumentException ex)
         {

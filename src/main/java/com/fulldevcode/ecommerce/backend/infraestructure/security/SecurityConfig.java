@@ -98,14 +98,18 @@ public class SecurityConfig {
 
                         // private routes
 
-                        // routes for user and admin
+                        // routes for user, admin and deliveries
                         .requestMatchers("/api/users/editUser/*").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
                         .requestMatchers("/api/users/userInfo/*").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
                         .requestMatchers("/api/products/getAll").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
                         .requestMatchers("/api/orders/orderById/*").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
-                        .requestMatchers("/api/orders/changeState").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+                        .requestMatchers("/api/orders/cancelOrder/*").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
                         .requestMatchers("/api/orders/getOrdersUser/*").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                         .requestMatchers("/api/categories/getAll").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                        .requestMatchers("/api/orders/ordersPending").hasAnyAuthority("ROLE_ADMIN", "ROLE_DELIVERY")
+                        .requestMatchers("/api/shipments/getAll/*").hasAnyAuthority("ROLE_ADMIN", "ROLE_DELIVERY")
+                        .requestMatchers("/api/payslips/getAllPayslipsUser/*").hasAnyAuthority("ROLE_ADMIN", "ROLE_DELIVERY")
+                        .requestMatchers("/api/payslips/getById/*").hasAnyAuthority("ROLE_ADMIN", "ROLE_DELIVERY")
 
                         // routes only user
                         .requestMatchers("/api/orders/orderCreate").hasAuthority("ROLE_USER")
@@ -122,7 +126,15 @@ public class SecurityConfig {
                         .requestMatchers("/api/orders/totalSalesCategory").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/api/orders/maxSalesProduct").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/api/inventoryAdjustments/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/api/shipments/deliveriesUsersTotals").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/api/payslips/payslipUsersTotal").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/api/users/getAllDeliveries").hasAuthority("ROLE_ADMIN")
 
+                        // router only delivery
+                        .requestMatchers("/api/shipments/*").hasAuthority("ROLE_DELIVERY")
+                        .requestMatchers("/api/shipments/cancel/*").hasAuthority("ROLE_DELIVERY")
+                        .requestMatchers("/api/shipments/confirm/*").hasAuthority("ROLE_DELIVERY")
+                        .requestMatchers("/api/payslips").hasAuthority("ROLE_DELIVERY")
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> {

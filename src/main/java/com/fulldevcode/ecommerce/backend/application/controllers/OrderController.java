@@ -3,6 +3,7 @@ package com.fulldevcode.ecommerce.backend.application.controllers;
 import com.fulldevcode.ecommerce.backend.domain.Services.OrderServices;
 import com.fulldevcode.ecommerce.backend.infraestructure.DTO.*;
 import com.fulldevcode.ecommerce.backend.infraestructure.models.OrderEntity;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.web.bind.annotation.*;
 import org.w3c.dom.ls.LSInput;
 
@@ -46,10 +47,10 @@ public class OrderController {
         return Order;
     }
 
-    @PostMapping("/changeState")
-    public  ApiResponseDTO<ChangeStateDTO> ChangeState(@RequestBody ChangeStateDTO stateDTO)
+    @PatchMapping("/cancelOrder/{id}")
+    public  ApiResponseDTO<Integer> CancelOrder(@PathVariable Integer id)
     {
-        ApiResponseDTO<ChangeStateDTO> State = orderServices.ChangeStateOrder(stateDTO);
+        ApiResponseDTO<Integer> State = orderServices.CancelOrder(id);
         return State;
     }
 
@@ -87,4 +88,12 @@ public class OrderController {
         ApiResponseDTO<List<ReportTotalsDTO>> maxSales = orderServices.CategoriesMaxSales();
         return maxSales;
     }
+
+    @GetMapping("/ordersPending")
+    public ApiResponseDTO<List<OrderDetailsDTO>> GetPendingOrders()
+    {
+        ApiResponseDTO<List<OrderDetailsDTO>> pendingOrders = orderServices.GetOrdersPendingDelivery();
+        return pendingOrders;
+    }
+
 }
