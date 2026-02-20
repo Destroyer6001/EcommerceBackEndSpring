@@ -36,7 +36,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(List.of("http://localhost:4200", "http://127.0.0.1:4200"));
+        configuration.setAllowedOriginPatterns(List.of("http://localhost:4200", "http://127.0.0.1:4200", "http://localhost:8100", "http://127.0.0.1:8100" ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList(
                 "Authorization", "Content-Type", "Accept", "X-Requested-With",
@@ -99,8 +99,8 @@ public class SecurityConfig {
                         // private routes
 
                         // routes for user, admin and deliveries
-                        .requestMatchers("/api/users/editUser/*").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
-                        .requestMatchers("/api/users/userInfo/*").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+                        .requestMatchers("/api/users/editUser/*").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER", "ROLE_DELIVERY")
+                        .requestMatchers("/api/users/userInfo/*").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER", "ROLE_DELIVERY")
                         .requestMatchers("/api/products/getAll").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
                         .requestMatchers("/api/orders/orderById/*").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
                         .requestMatchers("/api/orders/cancelOrder/*").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")

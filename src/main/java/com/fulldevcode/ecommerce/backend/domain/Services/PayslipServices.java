@@ -70,7 +70,8 @@ public class PayslipServices {
                     .map(details -> new PaymentDetails(
                             details.getId(),
                             details.getPayValue(),
-                            details.getState()
+                            details.getState(),
+                            details.getShipment().getDeliveryDate()
                     )).toList();
 
             payslip.setTotal(payslipDetails.get().getTotal());

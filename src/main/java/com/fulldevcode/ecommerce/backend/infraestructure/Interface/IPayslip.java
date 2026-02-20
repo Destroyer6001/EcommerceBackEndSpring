@@ -28,7 +28,8 @@ public interface IPayslip extends JpaRepository<PayslipEntity, Integer> {
             SELECT DISTINCT py
             FROM PayslipEntity py
             JOIN FETCH py.payments pa
-            WHERE py.id = :id
+            JOIN FETCH pa.shipment
+            WHERE py.id = :id 
             """)
     Optional<PayslipEntity> FindPaySlipDetailsById(@Param("id") Integer id);
 
